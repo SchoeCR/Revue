@@ -28,7 +28,7 @@ jobs:
       run: dotnet test --no-build --verbosity normal
     - name: Pack
       run: dotnet pack --configuration Release -p:PackageVersion=1.0.${{ github.run_number }}
-#    - name: Push package
-#      run: dotnet nuget push "bin/Release/Revue.1.0.${{ github.run_number }}.nupkg" --api-key YOUR_GITHUB_PAT --source "github"
-
-    # Create GitHub Release (if we want)
+    - name: Login to GitHub Packages
+      run: dotnet nuget add source --username SchoeCR --password ${{ secrets.MY_GITHUB_PAT }} --store-password-in-clear-text --name github "https://nuget.pkg.github.com/NAMESPACE/index.json"
+    - name: Push package
+      run: dotnet nuget push "bin/Release/Revue.1.0.${{ github.run_number }}.nupkg" --api-key ${{ secrets.MY_GITHUB_PAT }} --source "github"
