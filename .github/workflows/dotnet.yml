@@ -37,3 +37,5 @@ jobs:
       
     - name: Push package
       run: dotnet nuget push "bin/Release/Revue.1.0.${{ github.run_number }}.nupkg" --api-key ${{secrets.GITHUB_TOKEN}} --source "github"
+
+    # Final step - Deploy to Azure or AWS 
