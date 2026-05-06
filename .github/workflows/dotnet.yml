@@ -26,23 +26,9 @@ jobs:
       run: dotnet build --no-restore
     - name: Test
       run: dotnet test --no-build --verbosity normal
-    - name: Publish
-      run: dotnet publish --no-restore 
-
-    - name: Zip build artifacts
-      uses: OctopusDeploy/create-zip-package-action@v3.0.2
-      with:
-        package_id: Revue
-        version: "1.0.$((GITHUB_RUN_NUMBER))"
-        base_path: ./bin/Release/net8.0/publish/
-        files: |
-         **/*
-        output_folder: ./output
-
-    - name: Publish build artifacts
-      uses: actions/upload-artifact@v7
-      with:
-        name: revue-webapp
-        path: ./output/Revue.1.0.$((GITHUB_RUN_NUMBER)).zip
+    - name: Pack
+      run: dotnet pack --configuration Release -p:PackageVersion=1.0.${{ github.run_number }}
+#    - name: Push package
+#      run: dotnet nuget push "bin/Release/Revue.1.0.${{ github.run_number }}.nupkg" --api-key YOUR_GITHUB_PAT --source "github"
 
     # Create GitHub Release (if we want)
